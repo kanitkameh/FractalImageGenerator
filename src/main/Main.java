@@ -10,7 +10,7 @@ public class Main {
 		new Program(new ArgumentParser(args));
 		///end code here
 		long end = Calendar.getInstance().getTimeInMillis();
-		System.out.println("Time: "+(end-start));
+		System.out.println("Total Execution Time: "+(end-start));
 		
 	}
 

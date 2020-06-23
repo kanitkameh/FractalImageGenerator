@@ -30,7 +30,10 @@ public class Program {
 	}
 
 	void startProgram() {
+		System.out.println("Program started.");
+
 		image = new BufferedImage(args.getWidthInPixels(), args.getHeightInPixels(), BufferedImage.TYPE_INT_RGB);
+
 		//TODO separate number matrix generation, thread starting and color writing function to separate classes
 		Complex[][] pixelsAsNumbers = generateNumberMatrix(); //this will be the input for the threads
 		Color[][] pixelsAsColors = generateColorMatrix(); //this will be where the threads will write/their output
@@ -78,12 +81,14 @@ public class Program {
 
 	//The results will be written in this matrix, it shouldn't contain any data
 	private Color[][] generateColorMatrix() {
+		System.out.println("Generating color pixel matrix for the threads.");
 		Color[][] result = new Color[args.widthInPixels][args.heightInPixels];
 		return result;
 	}
 
 	//TODO Parallel number matrix generation
 	private Complex[][] generateNumberMatrix() {
+		System.out.println("Generating complex number matrix.");
 		Complex[][] result = new Complex[args.widthInPixels][args.heightInPixels];
 
 		double xDelta = (args.realRectangle.getBiggestX() - args.realRectangle.getSmallestX())/args.widthInPixels;
