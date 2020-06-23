@@ -1,6 +1,6 @@
 package main;
 
-public class Rect <T>{
+public class Rect <T> {
 	private T smallestX;
 	private T smallestY;
 	private T biggestX;
@@ -11,6 +11,12 @@ public class Rect <T>{
 		this.biggestX = biggestX;
 		this.smallestY = smallestY;
 		this.biggestY = biggestY;
+	}
+	public Rect(Rect<T> other) {
+		this.smallestX = other.smallestX;
+		this.biggestX = other.biggestX;
+		this.smallestY = other.smallestY;
+		this.biggestY = other.biggestY;
 	}
 	public T getSmallestX() {
 		return smallestX;
