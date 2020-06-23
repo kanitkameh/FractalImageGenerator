@@ -22,8 +22,8 @@ public class FractalRectThread implements Runnable {
 	public void run() {
 	//TODO 
 	//assert that the dimensions of output match with pixelAsComplexNumbers
-	for (int x = indexes.getSmallestX(); x <= indexes.getBiggestX(); x++) {
-		for (int y = indexes.getSmallestY(); y <= indexes.getBiggestY(); y++) {
+		for (int x = indexes.getSmallestX(); x <= indexes.getBiggestX(); x++) {
+			for (int y = indexes.getSmallestY(); y <= indexes.getBiggestY(); y++) {
 				applyFunctionUptoNTimes(Program.maxStepCount,pixelAsComplexNumbers[x][y],x,y);
 			}
 		}
