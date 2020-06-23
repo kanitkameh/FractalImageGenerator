@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Color;
+import java.util.Calendar;
 
 import org.apache.commons.math3.complex.Complex;
 
@@ -20,6 +21,8 @@ public class FractalRectThread implements Runnable {
 
 	@Override
 	public void run() {
+	System.out.println(Thread.currentThread().getName()+" has started");
+	long start = Calendar.getInstance().getTimeInMillis();
 	//TODO 
 	//assert that the dimensions of output match with pixelAsComplexNumbers
 		for (int x = indexes.getSmallestX(); x <= indexes.getBiggestX(); x++) {
@@ -27,6 +30,8 @@ public class FractalRectThread implements Runnable {
 				applyFunctionUptoNTimes(Program.maxStepCount,pixelAsComplexNumbers[x][y],x,y);
 			}
 		}
+	long end = Calendar.getInstance().getTimeInMillis();
+	System.out.println(Thread.currentThread().getName()+" has ended. Execution time: "+(end-start));
 	}
 	//This is function composition f(f(f(n)))
 	void applyFunctionUptoNTimes(int times,Complex number,int xPosition, int yPosition) {
