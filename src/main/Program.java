@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.imageio.ImageIO;
 
@@ -15,6 +17,7 @@ public class Program {
 	//How much is the distance threshold which when passed we conclude that the point isn't in the fractal set
 	static final double threshHoldRadius = 4; //TODO maybe it should use the real rect from the ArgumentParser
 	//create granularity constant and use it to load balance
+	static final int granularity = 1;
 	
 	ArgumentParser args;
 
@@ -26,7 +29,6 @@ public class Program {
 	}
 
 	void startProgram() {
-		//TODO check other types for BufferedImage types
 		image = new BufferedImage(args.getWidthInPixels(), args.getHeightInPixels(), BufferedImage.TYPE_INT_RGB);
 		//TODO separate number matrix generation, thread starting and color writing function to separate classes
 		Complex[][] pixelsAsNumbers = generateNumberMatrix(); //this will be the input for the threads
@@ -44,17 +46,12 @@ public class Program {
 		}
 	}
 	private void startThreads(Complex[][] pixelsAsNumbers, Color[][] pixelsAsColors) {
+		ExecutorService pool = Executors.newFixedThreadPool(args.threadCount);
+		Rect<Integer> currentRect = new Rect<Integer>(0,(Program.));
 		FractalRectThread runable1 = 
 				new FractalRectThread(
 						new Rect<Integer>(0,pixelsAsNumbers.length-1,0,pixelsAsNumbers[0].length-1), pixelsAsNumbers, pixelsAsColors);
-		Thread t1 = new Thread(runable1);
-		t1.start();
-		try {
-			t1.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		pool.execute(runable1);
 	}
 
 	private void fillImage(BufferedImage image2, Color[][] pixelsAsColors) {
