@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
@@ -47,11 +48,23 @@ public class Program {
 	}
 	private void startThreads(Complex[][] pixelsAsNumbers, Color[][] pixelsAsColors) {
 		ExecutorService pool = Executors.newFixedThreadPool(args.threadCount);
-		Rect<Integer> currentRect = new Rect<Integer>(0,(Program.));
-		FractalRectThread runable1 = 
-				new FractalRectThread(
-						new Rect<Integer>(0,pixelsAsNumbers.length-1,0,pixelsAsNumbers[0].length-1), pixelsAsNumbers, pixelsAsColors);
-		pool.execute(runable1);
+		int rowCount = pixelsAsNumbers.length;
+		int columnCount = pixelsAsNumbers[0].length;
+		for(int x=0;x<=rowCount-1;x+=granularity) {
+			for(int y=0;y<=columnCount-1;y+=granularity) {
+				Rect<Integer> currentRect = new Rect<Integer>(x,Math.min(x+granularity,rowCount-1),
+						y,Math.min(y+granularity,columnCount-1));
+				FractalRectThread runable = new FractalRectThread(currentRect, pixelsAsNumbers, pixelsAsColors);
+				pool.execute(runable);
+			}
+		}
+		pool.shutdown();
+		try {
+			pool.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+		} catch (InterruptedException e) {
+			System.out.println("There is a thread in the thread pool which hasnt completed yet");
+			e.printStackTrace();
+		}
 	}
 
 	private void fillImage(BufferedImage image2, Color[][] pixelsAsColors) {
