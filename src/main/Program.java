@@ -16,7 +16,7 @@ import org.apache.commons.math3.complex.Complex;
 
 public class Program {
 	//How many iterations till we conclude if the point is in the fractal set
-	static final int maxStepCount=300; //TODO check how much should it be
+	static final int maxStepCount=3000; //TODO check how much should it be
 	//How much is the distance threshold which when passed we conclude that the point isn't in the fractal set
 	//It is calculated automatically to fit the whole real rectangle to be rendered on the output image
 	static double threshHoldRadius; 
@@ -59,8 +59,8 @@ public class Program {
 		image = new BufferedImage(args.getWidthInPixels(), args.getHeightInPixels(), BufferedImage.TYPE_INT_RGB);
 
 		//TODO separate number matrix generation, thread starting and color writing function to separate classes
-		Complex[][] pixelsAsNumbers = generateNumberMatrix(); //this will be the input for the threads
-		Color[][] pixelsAsColors = generateColorMatrix(); //this will be where the threads will write/their output
+		Complex[][] pixelsAsNumbers = createNumberMatrix(); //this will be the input for the threads
+		Color[][] pixelsAsColors = createColorMatrix(); //this will be where the threads will write/their output
 
 		startThreads(pixelsAsNumbers,pixelsAsColors);
 
@@ -73,6 +73,12 @@ public class Program {
 			e.printStackTrace();
 		}
 	}
+	private Complex[][] createNumberMatrix() {
+		System.out.println("Generating number pixel matrix for the threads.");
+		Complex[][] result = new Complex[args.widthInPixels][args.heightInPixels];
+		return result;
+	}
+
 	private void startThreads(Complex[][] pixelsAsNumbers, Color[][] pixelsAsColors) {
 		ExecutorService pool = Executors.newFixedThreadPool(args.threadCount);
 		int rowCount = pixelsAsNumbers.length;
@@ -81,7 +87,7 @@ public class Program {
 			for(int y=0;y<=columnCount-1;y+=granularity) {
 				Rect<Integer> currentRect = new Rect<Integer>(x,Math.min(x+granularity,rowCount-1),
 						y,Math.min(y+granularity,columnCount-1));
-				FractalRectThread runable = new FractalRectThread(currentRect, pixelsAsNumbers, pixelsAsColors);
+				FractalRectThread runable = new FractalRectThread(currentRect, pixelsAsNumbers, pixelsAsColors,args);
 				pool.execute(runable);
 			}
 		}
@@ -104,27 +110,11 @@ public class Program {
 	}
 
 	//The results will be written in this matrix, it shouldn't contain any data
-	private Color[][] generateColorMatrix() {
+	private Color[][] createColorMatrix() {
 		System.out.println("Generating color pixel matrix for the threads.");
 		Color[][] result = new Color[args.widthInPixels][args.heightInPixels];
 		return result;
 	}
 
-	//TODO Parallel number matrix generation
-	private Complex[][] generateNumberMatrix() {
-		System.out.println("Generating complex number matrix.");
-		Complex[][] result = new Complex[args.widthInPixels][args.heightInPixels];
-
-		double xDelta = (args.realRectangle.getBiggestX() - args.realRectangle.getSmallestX())/args.widthInPixels;
-		double yDelta = (args.realRectangle.getBiggestY() - args.realRectangle.getSmallestY())/args.heightInPixels;
-		for (int x = 0; x < result.length; x++) {
-			for (int y = 0; y < result[x].length; y++) {
-				result[x][y]=new Complex(args.realRectangle.getSmallestX()+(xDelta*x),
-						args.realRectangle.getSmallestY()+(yDelta*y));
-			}
-		}
-		return result;
-	}
-	
 
 }
