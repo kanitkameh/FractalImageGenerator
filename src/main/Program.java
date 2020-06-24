@@ -16,7 +16,7 @@ import org.apache.commons.math3.complex.Complex;
 
 public class Program {
 	//How many iterations till we conclude if the point is in the fractal set
-	static final int maxStepCount=50; //TODO check how much should it be
+	static final int maxStepCount=300; //TODO check how much should it be
 	//How much is the distance threshold which when passed we conclude that the point isn't in the fractal set
 	//It is calculated automatically to fit the whole real rectangle to be rendered on the output image
 	static double threshHoldRadius; 

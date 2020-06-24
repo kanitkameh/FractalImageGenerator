@@ -48,7 +48,7 @@ public class FractalRectThread implements Runnable {
 		}
 		//number is in the fractal set or very close to it 
 		//we color it black
-		output[xPosition][yPosition]=Color.black;
+		output[xPosition][yPosition]=Color.white;
 	}
 
 }
