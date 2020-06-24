@@ -7,7 +7,7 @@ How to build and use:
 ```
 mvn clean package
 cd target/
-java -jar SPO-0.0.1-SNAPSHOT-jar-with-dependencies.jar -size 1920x1080 -rect -8.0:8.0:-4.5:4.5 -tasks 4 -output fractal.png -granularity 50 -quiet
+java -jar SPO-0.0.1-SNAPSHOT-jar-with-dependencies.jar -size 5000x3000 -rect -2.5:2.5:-1.5:1.5 -tasks 1 -output fractal.png -granularity 50 -quiet
 ```
 ## Options
 * -size widthxheight
