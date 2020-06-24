@@ -7,7 +7,7 @@ How to build and use:
 ```
 mvn clean package
 cd target/
-java -jar SPO-0.0.1-SNAPSHOT-jar-with-dependencies.jar -size 1920x1080 -rect -8.0:8.0:-4.5:4.5 -tasks 4 -output fractal.png -granularity 50
+java -jar SPO-0.0.1-SNAPSHOT-jar-with-dependencies.jar -size 1920x1080 -rect -8.0:8.0:-4.5:4.5 -tasks 4 -output fractal.png -granularity 50 -quiet
 ```
 ## Options
 * -size widthxheight
@@ -20,4 +20,6 @@ java -jar SPO-0.0.1-SNAPSHOT-jar-with-dependencies.jar -size 1920x1080 -rect -8.
   * Defines the name of the output image of the fractal
 * -granularity pixelCount
   * Threads submatrice size 
+* -quiet
+  * Doesn't output nothing except total program time on the stdout
 ![Generated Fractal](fractal.png)
