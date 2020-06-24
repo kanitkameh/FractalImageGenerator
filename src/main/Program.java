@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -32,7 +34,23 @@ public class Program {
 		double real = Math.max(Math.abs(args.getRealRectangle().getSmallestX()),Math.abs(args.getRealRectangle().getBiggestX()));
 		double imaginary = Math.max(Math.abs(args.getRealRectangle().getSmallestY()),Math.abs(args.getRealRectangle().getBiggestY()));
 		threshHoldRadius = (new Complex(real,imaginary)).abs();
+		//Setting a quiet mode which will disable all output to the standard output
+		PrintStream oldStdOut = System.out;
+		if(args.isQuiet) {
+			System.setOut(new PrintStream(new OutputStream() {
+				public void close() {}
+				public void flush() {}
+				public void write(byte[] b) {}
+				public void write(byte[] b, int off, int len) {}
+				public void write(int b) {
+				}
+			}));
+		}
 		startProgram();
+		//restoring standard output so main can still output the total time of the program
+		if(args.isQuiet) {
+			System.setOut(oldStdOut);
+		}
 	}
 
 	void startProgram() {
