@@ -11,7 +11,7 @@ java -jar SPO-0.0.1-SNAPSHOT-jar-with-dependencies.jar -size 500x300 -rect -2.5:
 ```
 ## Options
 * -size widthxheight
-  * Defines the size of the fractal image
+  * Defines the size of the fractal image in pixels
 * -rect beginingOfRealAxis:EndOfRealAxis:BeginOfImaginaryAxis:EndOfImaginaryAxis
   * Defines the rectangle on the complex plane which will be visualized
 * -tasks threadCount
@@ -23,5 +23,5 @@ java -jar SPO-0.0.1-SNAPSHOT-jar-with-dependencies.jar -size 500x300 -rect -2.5:
 * -quiet
   * Doesn't output nothing except total program time on the stdout
 * -max-iterations
-  * Number of iterations to test each point if it is part of the fractal. Points that doesn't go to inifinity(don't go beyond the threshold of the real rect in the specified number of iterations) are part of it.
+  * Number of iterations to test each point if it is part of the fractal. Points that doesn't go to inifinity(don't go beyond the threshold of the real rect in the specified number of iterations) are part of it. More iterations means more precision in the output image.(Resolution should also be increased to be visible)
 ![Generated Fractal](fractal.png)
