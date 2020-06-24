@@ -8,7 +8,7 @@ public class ArgumentParser {
 	String outputFileName;
 	boolean isQuiet;
 	int granularity;
-
+	int maxIterationCount;
 	String[] args;
 	
 	public ArgumentParser(String[] args) throws IllegalArgumentException {
@@ -20,7 +20,11 @@ public class ArgumentParser {
 		parseThreadCount();
 		parseOutputFileName();
 		parseQuietMode();
+		parseMaxIterationCount();
 		parseGranularity();
+	}
+	private void parseMaxIterationCount() {
+		maxIterationCount = Integer.parseInt(args[findIndex(args,"-max-iterations")+1]);
 	}
 	private void parseGranularity() {
 		granularity = Integer.parseInt(args[findIndex(args,"-granularity")+1]);
@@ -111,5 +115,11 @@ public class ArgumentParser {
 	}
 	public void setGranularity(int granularity) {
 		this.granularity = granularity;
+	}
+	public int getMaxIterationCount() {
+		return maxIterationCount;
+	}
+	public void setMaxIterationCount(int maxIterationCount) {
+		this.maxIterationCount = maxIterationCount;
 	}
 }

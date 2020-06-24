@@ -7,7 +7,7 @@ How to build and use:
 ```
 mvn clean package
 cd target/
-java -jar SPO-0.0.1-SNAPSHOT-jar-with-dependencies.jar -size 5000x3000 -rect -2.5:2.5:-1.5:1.5 -tasks 1 -output fractal.png -granularity 50 -quiet
+java -jar SPO-0.0.1-SNAPSHOT-jar-with-dependencies.jar -size 500x300 -rect -2.5:2.5:-1.5:1.5 -tasks 4 -output fractal.png -granularity 50 -quiet -max-iterations 50
 ```
 ## Options
 * -size widthxheight
@@ -22,4 +22,6 @@ java -jar SPO-0.0.1-SNAPSHOT-jar-with-dependencies.jar -size 5000x3000 -rect -2.
   * Threads submatrice size 
 * -quiet
   * Doesn't output nothing except total program time on the stdout
+* -max-iterations
+  * Number of iterations to test each point if it is part of the fractal. Points that doesn't go to inifinity(don't go beyond the threshold of the real rect in the specified number of iterations) are part of it.
 ![Generated Fractal](fractal.png)

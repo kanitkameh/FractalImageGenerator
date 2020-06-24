@@ -16,7 +16,7 @@ import org.apache.commons.math3.complex.Complex;
 
 public class Program {
 	//How many iterations till we conclude if the point is in the fractal set
-	static final int maxStepCount=3000; //TODO check how much should it be
+	static int maxStepCount; //TODO check how much should it be
 	//How much is the distance threshold which when passed we conclude that the point isn't in the fractal set
 	//It is calculated automatically to fit the whole real rectangle to be rendered on the output image
 	static double threshHoldRadius; 
@@ -30,6 +30,7 @@ public class Program {
 	Program(ArgumentParser args){
 		this.args = args;
 		granularity = args.getGranularity();
+		maxStepCount = args.getMaxIterationCount();
 		//We make the thresholdRadius big enough to fit the whole real rectangle the user entered to be rendered
 		double real = Math.max(Math.abs(args.getRealRectangle().getSmallestX()),Math.abs(args.getRealRectangle().getBiggestX()));
 		double imaginary = Math.max(Math.abs(args.getRealRectangle().getSmallestY()),Math.abs(args.getRealRectangle().getBiggestY()));
