@@ -18,7 +18,7 @@ public class Program {
 	//How much is the distance threshold which when passed we conclude that the point isn't in the fractal set
 	static final double threshHoldRadius = 4; //TODO maybe it should use the real rect from the ArgumentParser
 	//create granularity constant and use it to load balance
-	static final int granularity = 50;
+	static int granularity;
 	
 	ArgumentParser args;
 
@@ -26,6 +26,7 @@ public class Program {
 
 	Program(ArgumentParser args){
 		this.args = args;
+		granularity = this.args.getGranularity();
 		startProgram();
 	}
 

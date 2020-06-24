@@ -7,6 +7,7 @@ public class ArgumentParser {
 	int threadCount;
 	String outputFileName;
 	boolean isQuiet;
+	int granularity;
 
 	String[] args;
 	
@@ -19,6 +20,10 @@ public class ArgumentParser {
 		parseThreadCount();
 		parseOutputFileName();
 		parseQuietMode();
+		parseGranularity();
+	}
+	private void parseGranularity() {
+		granularity = Integer.parseInt(args[findIndex(args,"-granularity")+1]);
 	}
 	private void parseRect() {
 		String[] coords = args[findIndex(args,"-rect")+1].split(":");
@@ -100,5 +105,11 @@ public class ArgumentParser {
 	}
 	public void setArgs(String[] args) {
 		this.args = args;
+	}
+	public int getGranularity() {
+		return granularity;
+	}
+	public void setGranularity(int granularity) {
+		this.granularity = granularity;
 	}
 }
