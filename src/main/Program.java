@@ -16,7 +16,7 @@ public class Program {
 	//How many iterations till we conclude if the point is in the fractal set
 	static final int maxStepCount=50; //TODO check how much should it be
 	//How much is the distance threshold which when passed we conclude that the point isn't in the fractal set
-	static final double threshHoldRadius = 4; //TODO maybe it should use the real rect from the ArgumentParser
+	static double threshHoldRadius; //TODO maybe it should use the real rect from the ArgumentParser
 	//create granularity constant and use it to load balance
 	static int granularity;
 	
@@ -26,7 +26,11 @@ public class Program {
 
 	Program(ArgumentParser args){
 		this.args = args;
-		granularity = this.args.getGranularity();
+		granularity = args.getGranularity();
+		//We make the thresholdRadius big enough to fit the whole real rectangle the user entered to be rendered
+		double real = Math.max(Math.abs(args.getRealRectangle().getSmallestX()),Math.abs(args.getRealRectangle().getBiggestX()));
+		double imaginary = Math.max(Math.abs(args.getRealRectangle().getSmallestY()),Math.abs(args.getRealRectangle().getBiggestY()));
+		threshHoldRadius = (new Complex(real,imaginary)).abs();
 		startProgram();
 	}
 
