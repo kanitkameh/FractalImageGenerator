@@ -76,10 +76,14 @@ public class Program {
 		int rowCount = pixelsAsNumbers.length;
 		int columnCount = pixelsAsNumbers[0].length;
 		long start = Calendar.getInstance().getTimeInMillis();
-		for(int x=0;x<=rowCount-1;x+=granularity) {
-			for(int y=0;y<=columnCount-1;y+=granularity) {
-				Rect<Integer> currentRect = new Rect<Integer>(x,Math.min(x+granularity,rowCount-1),
-						y,Math.min(y+granularity,columnCount-1));
+		//First split the threads in columns
+		int xStep = rowCount/args.threadCount;
+		//Then split the columns into smaller pieces according to the granularity coefficient
+		int yStep = columnCount/granularity;
+		for(int x=0;x<=rowCount-1;x+=xStep) {
+			for(int y=0;y<=columnCount-1;y+=yStep) {
+				Rect<Integer> currentRect = new Rect<Integer>(x,Math.min(x+xStep,rowCount-1),
+						y,Math.min(y+yStep,columnCount-1));
 				FractalRectThread runable = new FractalRectThread(currentRect, pixelsAsNumbers, pixelsAsColors,args);
 				pool.execute(runable);
 			}
