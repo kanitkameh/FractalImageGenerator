@@ -1,15 +1,15 @@
 package main;
 
 public class ArgumentParser {
-	int widthInPixels;
-	int heightInPixels;
-	Rect<Double> realRectangle;
-	int threadCount;
-	String outputFileName;
-	boolean isQuiet;
-	int granularity;
-	int maxIterationCount;
-	String[] args;
+	private int widthInPixels;
+	private int heightInPixels;
+	private Rect<Double> realRectangle;
+	private int threadCount;
+	private String outputFileName;
+	private boolean isQuiet;
+	private int granularity;
+	private int maxIterationCount;
+	private String[] args;
 	
 	public ArgumentParser(String[] args) throws IllegalArgumentException {
 		this.args=args;

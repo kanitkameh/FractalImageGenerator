@@ -35,12 +35,12 @@ public class Program {
 		double imaginary = Math.max(Math.abs(args.getRealRectangle().getSmallestY()),Math.abs(args.getRealRectangle().getBiggestY()));
 		threshHoldRadius = (new Complex(real,imaginary)).abs();
 		//Setting a quiet mode which will disable all output to the standard output
-		if(args.isQuiet) {
+		if(args.isQuiet()) {
 			IOManager.disableStandardOutput();
 		}
 		startProgram();
 		//restoring standard output so main can still output the total time of the program
-		if(args.isQuiet) {
+		if(args.isQuiet()) {
 			IOManager.enableStandardOutput();
 		}
 	}
@@ -58,7 +58,7 @@ public class Program {
 
 		fillImage(image,pixelsAsColors);
 		//writing the BufferedImage to a file
-		File f = new File(args.outputFileName);
+		File f = new File(args.getOutputFileName());
 		try {
 			ImageIO.write(image, "png", f);
 		} catch (IOException e) {
@@ -67,17 +67,17 @@ public class Program {
 	}
 	private Complex[][] createNumberMatrix() {
 		System.out.println("Generating number pixel matrix for the threads.");
-		Complex[][] result = new Complex[args.widthInPixels][args.heightInPixels];
+		Complex[][] result = new Complex[args.getWidthInPixels()][args.getHeightInPixels()];
 		return result;
 	}
 
 	private void startThreads(Complex[][] pixelsAsNumbers, Color[][] pixelsAsColors) {
-		ExecutorService pool = Executors.newFixedThreadPool(args.threadCount);
+		ExecutorService pool = Executors.newFixedThreadPool(args.getThreadCount());
 		int rowCount = pixelsAsNumbers.length;
 		int columnCount = pixelsAsNumbers[0].length;
 		long start = Calendar.getInstance().getTimeInMillis();
 		//First split the threads in columns
-		int xStep = rowCount/args.threadCount;
+		int xStep = rowCount/args.getThreadCount();
 		//Then split the columns into smaller pieces according to the granularity coefficient
 		int yStep = columnCount/granularity;
 		for(int x=0;x<=rowCount-1;x+=xStep) {
@@ -113,7 +113,7 @@ public class Program {
 	//The results will be written in this matrix, it shouldn't contain any data
 	private Color[][] createColorMatrix() {
 		System.out.println("Generating color pixel matrix for the threads.");
-		Color[][] result = new Color[args.widthInPixels][args.heightInPixels];
+		Color[][] result = new Color[args.getWidthInPixels()][args.getHeightInPixels()];
 		return result;
 	}
 

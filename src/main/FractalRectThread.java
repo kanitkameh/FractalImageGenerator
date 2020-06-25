@@ -58,12 +58,12 @@ public class FractalRectThread implements Runnable {
 	private void fillNumberSubmatrix() {
 		System.out.println("Generating complex number matrix.");
 
-		double xDelta = (args.realRectangle.getBiggestX() - args.realRectangle.getSmallestX())/args.widthInPixels;
-		double yDelta = (args.realRectangle.getBiggestY() - args.realRectangle.getSmallestY())/args.heightInPixels;
+		double xDelta = (args.getRealRectangle().getBiggestX() - args.getRealRectangle().getSmallestX())/args.getWidthInPixels();
+		double yDelta = (args.getRealRectangle().getBiggestY() - args.getRealRectangle().getSmallestY())/args.getHeightInPixels();
 		for (int x = indexes.getSmallestX(); x <= indexes.getBiggestX(); x++) {
 			for (int y = indexes.getSmallestY(); y <= indexes.getBiggestY(); y++) {
-				pixelAsComplexNumbers[x][y]=new Complex(args.realRectangle.getSmallestX()+(xDelta*x),
-						args.realRectangle.getSmallestY()+(yDelta*y));
+				pixelAsComplexNumbers[x][y]=new Complex(args.getRealRectangle().getSmallestX()+(xDelta*x),
+						args.getRealRectangle().getSmallestY()+(yDelta*y));
 			}
 		}
 	}
