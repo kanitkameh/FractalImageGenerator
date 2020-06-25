@@ -4,8 +4,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -36,21 +35,13 @@ public class Program {
 		double imaginary = Math.max(Math.abs(args.getRealRectangle().getSmallestY()),Math.abs(args.getRealRectangle().getBiggestY()));
 		threshHoldRadius = (new Complex(real,imaginary)).abs();
 		//Setting a quiet mode which will disable all output to the standard output
-		PrintStream oldStdOut = System.out;
 		if(args.isQuiet) {
-			System.setOut(new PrintStream(new OutputStream() {
-				public void close() {}
-				public void flush() {}
-				public void write(byte[] b) {}
-				public void write(byte[] b, int off, int len) {}
-				public void write(int b) {
-				}
-			}));
+			IOManager.disableStandardOutput();
 		}
 		startProgram();
 		//restoring standard output so main can still output the total time of the program
 		if(args.isQuiet) {
-			System.setOut(oldStdOut);
+			IOManager.enableStandardOutput();
 		}
 	}
 
@@ -84,6 +75,7 @@ public class Program {
 		ExecutorService pool = Executors.newFixedThreadPool(args.threadCount);
 		int rowCount = pixelsAsNumbers.length;
 		int columnCount = pixelsAsNumbers[0].length;
+		long start = Calendar.getInstance().getTimeInMillis();
 		for(int x=0;x<=rowCount-1;x+=granularity) {
 			for(int y=0;y<=columnCount-1;y+=granularity) {
 				Rect<Integer> currentRect = new Rect<Integer>(x,Math.min(x+granularity,rowCount-1),
@@ -99,6 +91,10 @@ public class Program {
 			System.out.println("There is a thread in the thread pool which hasnt completed yet");
 			e.printStackTrace();
 		}
+		long end = Calendar.getInstance().getTimeInMillis();
+		IOManager.enableStandardOutput();
+		System.out.println("Parallel section time: "+(end-start));
+		IOManager.restorePrevious();
 	}
 
 	private void fillImage(BufferedImage image2, Color[][] pixelsAsColors) {
