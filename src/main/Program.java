@@ -34,7 +34,6 @@ public class Program {
 		double real = Math.abs((args.getRealRectangle().getSmallestX())-(args.getRealRectangle().getBiggestX()));
 		double imaginary = Math.abs((args.getRealRectangle().getSmallestY())-(args.getRealRectangle().getBiggestY()));
 		threshHoldRadius = real+imaginary;
-		System.out.println(threshHoldRadius);
 		//Setting a quiet mode which will disable all output to the standard output
 		if(args.isQuiet()) {
 			IOManager.disableStandardOutput();
