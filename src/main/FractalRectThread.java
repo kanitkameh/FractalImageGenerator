@@ -38,10 +38,11 @@ public class FractalRectThread implements Runnable {
 	}
 	//This is function composition f(f(f(n)))
 	void applyFunctionUptoNTimes(int times,Complex number,int xPosition, int yPosition) {
+		Complex start=number;
 		Complex result=number;
 		for (int i = 0; i < times; i++) {
 			result = number.multiply(result.cos());
-			if(result.abs()>Program.threshHoldRadius) {
+			if((start.subtract(result)).abs()>Program.threshHoldRadius) {
 				//number isn't in the fractal set as it grows to infinity
 				//we color it depending on how fast it moves to infinity
 				output[xPosition][yPosition]=new Color(0,0,(int)(((double)i/times)*255));

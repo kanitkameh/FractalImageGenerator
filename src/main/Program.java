@@ -31,9 +31,10 @@ public class Program {
 		granularity = args.getGranularity();
 		maxStepCount = args.getMaxIterationCount();
 		//We make the thresholdRadius big enough to fit the whole real rectangle the user entered to be rendered
-		double real = Math.max(Math.abs(args.getRealRectangle().getSmallestX()),Math.abs(args.getRealRectangle().getBiggestX()));
-		double imaginary = Math.max(Math.abs(args.getRealRectangle().getSmallestY()),Math.abs(args.getRealRectangle().getBiggestY()));
-		threshHoldRadius = (new Complex(real,imaginary)).abs();
+		double real = Math.abs((args.getRealRectangle().getSmallestX())-(args.getRealRectangle().getBiggestX()));
+		double imaginary = Math.abs((args.getRealRectangle().getSmallestY())-(args.getRealRectangle().getBiggestY()));
+		threshHoldRadius = real+imaginary;
+		System.out.println(threshHoldRadius);
 		//Setting a quiet mode which will disable all output to the standard output
 		if(args.isQuiet()) {
 			IOManager.disableStandardOutput();
