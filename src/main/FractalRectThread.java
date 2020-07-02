@@ -27,9 +27,12 @@ public class FractalRectThread implements Runnable {
 	int granularity = args.getGranularity();
 	int width = args.getWidthInPixels();
 	int height = args.getHeightInPixels();
-	int stripCount = granularity*threadCount;
+	//We want to have strips of width atleast 1 no matter the granularity
+	int stripCount = Math.min(granularity*threadCount,width);
+	//This is aproximate not always correct since integer division is rounded result
+	//Example: width = 1000 stripCount = 400 then stripSize should be 2,5 which is impossible
 	int stripSize = width/stripCount;
-	 
+
 	double smallestX = args.getRealRectangle().getSmallestX();
 	double biggestX = args.getRealRectangle().getBiggestX();
 	double smallestY = args.getRealRectangle().getSmallestY();
@@ -37,14 +40,19 @@ public class FractalRectThread implements Runnable {
 
 	double xDelta = (biggestX - smallestX)/width;
 	double yDelta = (biggestY - smallestY)/height;
-	//assert that the dimensions of output match with pixelAsComplexNumbers
-	for (int stripNumber = threadNumber; stripNumber < stripCount; stripNumber+=threadCount) {
+loop:{
+	//the condition is true since stripSize and StripCount get inaccurate with very small numbers
+	for (int stripNumber = threadNumber; true ; stripNumber+=threadCount) {
 		for (int x = stripNumber*stripSize; x < (stripNumber+1)*stripSize; x++) {
 			for (int y = 0; y < height; y++) {
+				if(x>=width) {
+					break loop;
+				}
 				applyFunctionUptoNTimes(Program.maxStepCount,new Complex(smallestX+(x*xDelta),smallestY+(y*yDelta)),x,y);
 			}
 		}
 	}
+}
 	long end = Calendar.getInstance().getTimeInMillis();
 	System.out.println(Thread.currentThread().getName()+" has ended. Execution time: "+(end-start));
 	}
