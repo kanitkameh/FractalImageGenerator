@@ -6,17 +6,14 @@ import java.util.Calendar;
 import org.apache.commons.math3.complex.Complex;
 
 public class FractalRectThread implements Runnable {
-	public FractalRectThread(Rect<Integer> indexes, Complex[][] pixelAsComplexNumbers, Color[][] output, ArgumentParser args) {
+	public FractalRectThread(int threadNumber, Color[][] output, ArgumentParser args) {
 		super();
-		this.indexes = indexes;
-		this.pixelAsComplexNumbers = pixelAsComplexNumbers;
+		this.threadNumber = threadNumber;
 		this.output = output;
 		this.args = args;
 	}
-	//Indexes of the submatrix/subrect of the complex matrix that this thread will process
-	Rect<Integer> indexes;
-	//Which complex number corresponds to the specific pixel
-	Complex[][] pixelAsComplexNumbers;
+	//this is the thread number
+	int threadNumber;
 	//The output to be written to the image
 	Color[][] output; 
 	//the arguments passed to the program
@@ -25,14 +22,29 @@ public class FractalRectThread implements Runnable {
 	public void run() {
 	System.out.println(Thread.currentThread().getName()+" has started");
 	long start = Calendar.getInstance().getTimeInMillis();
-	fillNumberSubmatrix();
-	//TODO 
+
+	int threadCount = args.getThreadCount();
+	int granularity = args.getGranularity();
+	int width = args.getWidthInPixels();
+	int height = args.getHeightInPixels();
+	int stripCount = granularity*threadCount;
+	int stripSize = width/stripCount;
+	 
+	double smallestX = args.getRealRectangle().getSmallestX();
+	double biggestX = args.getRealRectangle().getBiggestX();
+	double smallestY = args.getRealRectangle().getSmallestY();
+	double biggestY = args.getRealRectangle().getBiggestY();
+
+	double xDelta = (biggestX - smallestX)/width;
+	double yDelta = (biggestY - smallestY)/height;
 	//assert that the dimensions of output match with pixelAsComplexNumbers
-		for (int x = indexes.getSmallestX(); x <= indexes.getBiggestX(); x++) {
-			for (int y = indexes.getSmallestY(); y <= indexes.getBiggestY(); y++) {
-				applyFunctionUptoNTimes(Program.maxStepCount,pixelAsComplexNumbers[x][y],x,y);
+	for (int stripNumber = threadNumber; stripNumber < stripCount; stripNumber+=threadCount) {
+		for (int x = stripNumber*stripSize; x < (stripNumber+1)*stripSize; x++) {
+			for (int y = 0; y < height; y++) {
+				applyFunctionUptoNTimes(Program.maxStepCount,new Complex(smallestX+(x*xDelta),smallestY+(y*yDelta)),x,y);
 			}
 		}
+	}
 	long end = Calendar.getInstance().getTimeInMillis();
 	System.out.println(Thread.currentThread().getName()+" has ended. Execution time: "+(end-start));
 	}
@@ -55,18 +67,5 @@ public class FractalRectThread implements Runnable {
 		output[xPosition][yPosition]=Color.white;
 	}
 	
-	//The thread fills the numbers in its submatrix itself
-	private void fillNumberSubmatrix() {
-		System.out.println("Generating complex number matrix.");
-
-		double xDelta = (args.getRealRectangle().getBiggestX() - args.getRealRectangle().getSmallestX())/args.getWidthInPixels();
-		double yDelta = (args.getRealRectangle().getBiggestY() - args.getRealRectangle().getSmallestY())/args.getHeightInPixels();
-		for (int x = indexes.getSmallestX(); x <= indexes.getBiggestX(); x++) {
-			for (int y = indexes.getSmallestY(); y <= indexes.getBiggestY(); y++) {
-				pixelAsComplexNumbers[x][y]=new Complex(args.getRealRectangle().getSmallestX()+(xDelta*x),
-						args.getRealRectangle().getSmallestY()+(yDelta*y));
-			}
-		}
-	}
 
 }
