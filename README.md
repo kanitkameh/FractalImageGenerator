@@ -1,10 +1,8 @@
 # FractalImageGenerator
 This program generates fractal images using parallel programming(multiple threads). 
-It generates a matrix of complex numbers each of which corresponds to a pixel that would be on the output image.
-Then we start threads on non crossing submatrices to speed up the computation.
-Submatrices are created by splitting the image into thread count columns.
-Columns are further splitted by granularity coefficient.
-Each submatrix defines a task. Tasks are put in a queue by the thread executor. The threads in the thread pool pick them and execute them.
+It uses static load balancing by splitting the color matrix into columnt strips which count is equal to the number of threads * granularity.
+Threads are alternating between different strips. Better load balancing is achieved by smaller granularity.
+
 How to build and use:
 ```
 mvn clean package
